@@ -5,6 +5,7 @@
 //  Copyright (c) 2014 Guillaume Campagna. All rights reserved.
 //
 
+#import "Defines.h"
 #import "SVIndefiniteAnimatedView.h"
 
 #pragma mark SVIndefiniteAnimatedView
