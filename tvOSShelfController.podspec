@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "tvOSShelfController"
-  spec.version      = "0.0.8"
+  spec.version      = "0.0.9"
   spec.summary      = "tvOS section shelf view made easy."
 
   # This description is used to generate tags and improve search results.
@@ -79,7 +79,7 @@ Pod::Spec.new do |spec|
   #spec.exclude_files = "Classes/Exclude"
 
   # spec.public_header_files = "Classes/**/*.h"
-  spec.public_header_files = "tvOSShelfController/Cells/*.h", "tvOSShelfController/Defines.h", "tvOSShelfController/KBProtocols.h", "tvOSShelfController/Models/*.h", "tvOSShelfController/ViewController/*.h"
+  # spec.public_header_files = "tvOSShelfController/Cells/*.h", "tvOSShelfController/Defines.h", "tvOSShelfController/KBProtocols.h", "tvOSShelfController/Models/*.h", "tvOSShelfController/ViewController/*.h"
 
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
