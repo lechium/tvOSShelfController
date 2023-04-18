@@ -6,7 +6,7 @@
 //
 
 #import "KBModelItem.h"
-
+#import "Defines.h"
 @implementation KBModelItem
 
 - (NSString *)description {
