@@ -14,7 +14,6 @@
 #import "UIColor+Additions.h"
 #import <objc/runtime.h>
 #import "KBModelItem.h"
-#import "ViewController.h"
 
 @interface KBShelfViewController () {
     UILongPressGestureRecognizer *longPress;
