@@ -6,6 +6,7 @@
 //  Copyright © 2017 nito, LLC. All rights reserved.
 //
 
+#import "Defines.h"
 #import "KBTableViewCell.h"
 #import "KBDataItemCollectionViewCell.h"
 #import <FPScrollingBanner/FPScrollingBannerCollectionFlowLayout.h>
