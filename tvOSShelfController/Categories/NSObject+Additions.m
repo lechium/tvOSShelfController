@@ -314,46 +314,6 @@
 
 + (id)objectFromDictionary:(NSDictionary *)dictionary {
     return [self objectFromDictionary:dictionary usingClass:nil];
-    NSString *className = dictionary[@"___className"];
-    if (!className) {
-        className = [self valueForKey:@"className"];
-    }
-    Class cls = NSClassFromString(className);
-    id object = [cls new];
-    [dictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        if ([object respondsToSelector:NSSelectorFromString(key)]){
-            if ([obj isKindOfClass:NSArray.class]) {
-                NSMutableArray *newArray = [NSMutableArray new];
-                [obj enumerateObjectsUsingBlock:^(id  _Nonnull arrayObj, NSUInteger arrayIdx, BOOL * _Nonnull arrayStop) {
-                    if ([arrayObj isKindOfClass:NSDictionary.class]){
-                        id newObj = [self objectFromDictionary:arrayObj];
-                        [newArray addObject:newObj];
-                    }
-                }];
-                @try {
-                    [object setValue:newArray forKey:key];
-                } @catch (NSException *exception) {
-                    DLog(@"setKey: %@ exception: %@", key , exception);
-                }
-            } else if ([obj isKindOfClass:NSDictionary.class]){
-                id newObject = [self objectFromDictionary:obj];
-                @try {
-                    [object setValue:newObject forKey:key];
-                } @catch (NSException *exception) {
-                    DLog(@"setKey: %@ exception: %@", key , exception);
-                }
-            } else {
-                @try {
-                    [object setValue:obj forKey:key];
-                } @catch (NSException *exception) {
-                    DLog(@"setKey: %@ exception: %@", key , exception);
-                }
-            }
-        } else {
-            //TLog(@"object does NOT respond to: %@", key);
-        }
-    }];
-    return object;
 }
 
 //we'll never care about an items delegate details when saving a dict rep, this prevents an inifinite loop/crash on some classes.
