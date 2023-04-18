@@ -6,13 +6,13 @@
 //  Copyright © 2017 nito, LLC. All rights reserved.
 //
 
+#import "Defines.h"
 #import "KBShelfViewController.h"
 #import "KBTableViewCell.h"
 #import "KBDataItemCollectionViewCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIColor+Additions.h"
 #import <objc/runtime.h>
-#import "AppDelegate.h"
 #import "KBModelItem.h"
 #import "ViewController.h"
 
