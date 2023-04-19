@@ -26,7 +26,7 @@
 
 - (UIColor *)labelColor {
     UIColor *theColor = [UIColor colorWithDynamicProvider:^UIColor * _Nonnull(UITraitCollection * _Nonnull traitCollection) {
-        if(traitCollection.darkMode) {
+        if(traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
             return [UIColor colorWithRed:1 green:1 blue: 1 alpha: 0.5];
         } else {
             return [UIColor blackColor];
@@ -37,7 +37,7 @@
 
 - (UIColor *)secondaryLabelColor {
     UIColor *theColor = [UIColor colorWithDynamicProvider:^UIColor * _Nonnull(UITraitCollection * _Nonnull traitCollection) {
-        if(traitCollection.darkMode) {
+        if(traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
             return [UIColor colorWithRed:1 green:1 blue: 1 alpha: 0.3];
         } else {
             return [UIColor grayColor];

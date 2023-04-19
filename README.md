@@ -57,7 +57,7 @@ Easily set up a standard sectioned 'shelf' style view on tvOS (like in App Store
         sectionThree.size = @"320x240";
         sectionThree.infinite = false;
         sectionThree.autoScroll = false;
-        sectionThree.order = 1;
+        sectionThree.order = 2;
         sectionThree.className = @"KBModelItem";
         sectionThree.items = @[
             MODEL(@"Drake - Worst Behavior", @"https://i.ytimg.com/vi/CccnAvfLPvE/hq720.jpg?sqp=-oaymwEXCNAFEJQDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBKduZRk6TRsKi8h4DE_cPajmtOcA", @"CccnAvfLPvE"),
