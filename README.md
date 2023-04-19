@@ -102,3 +102,7 @@ lechium, kevin.w.bradley@me.com
 ## License
 
 tvOSShelfController is available under the MIT license. See the LICENSE file for more info.
+
+## Additional Notes
+
+This is still a little rough around the edges, I was trying to abstract this code out of nitoTV, improve and potentially even moderinize it, and I realized, a library like this STILL doesn't exist to my knowledge. I will actually add this to their index after a little more cleanup, just wanted to get something as barebones as possible that can work with a basic sample app.
