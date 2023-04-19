@@ -80,8 +80,8 @@ Easily set up a standard sectioned 'shelf' style view on tvOS (like in App Store
 
 ```
 
-![Screenshot](Sample.png "Normal Size")  <br/>
-
+![Screenshot](Sample.png "One")  <br/>
+![Screenshot](SampleTwo.png "Two")  <br/>
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
 ## Requirements
