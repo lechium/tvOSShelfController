@@ -26,13 +26,9 @@
     section.order = 0;
     section.className = @"KBModelItem";
     
-    KBModelItem *modelItem = [KBModelItem new];
-    modelItem.author = @"Drake";
+    KBModelItem *modelItem = MODEL(@"Drake - Worst Behavior", @"https://i.ytimg.com/vi/CccnAvfLPvE/hq720.jpg?sqp=-oaymwEXCNAFEJQDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBKduZRk6TRsKi8h4DE_cPajmtOcA", @"CccnAvfLPvE");
     modelItem.details = @"Drake";
-    modelItem.title = @"Drake - Worst Behavior";
-    modelItem.imagePath = @"https://i.ytimg.com/vi/CccnAvfLPvE/hq720.jpg?sqp=-oaymwEXCNAFEJQDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBKduZRk6TRsKi8h4DE_cPajmtOcA";
     modelItem.banner = modelItem.imagePath;
-    modelItem.uniqueID = @"CccnAvfLPvE";
     modelItem.resultType = @1;
     section.items = @[modelItem];
     
@@ -55,10 +51,10 @@
     KBSection *sectionThree = [KBSection new];
     sectionThree.type = @"standard";
     sectionThree.sectionName = @"Second";
-    sectionThree.size = @"320x240";
+    sectionThree.size = @"640x480";
     sectionThree.infinite = false;
     sectionThree.autoScroll = false;
-    sectionThree.order = 1;
+    sectionThree.order = 2;
     sectionThree.className = @"KBModelItem";
     sectionThree.items = @[
         MODEL(@"Drake - Worst Behavior", @"https://i.ytimg.com/vi/CccnAvfLPvE/hq720.jpg?sqp=-oaymwEXCNAFEJQDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBKduZRk6TRsKi8h4DE_cPajmtOcA", @"CccnAvfLPvE"),
@@ -67,7 +63,24 @@
         MODEL(@"Meek Mill - Going Bad feat. Drake (Official Video)", @"https://i.ytimg.com/vi/S1gp0m4B5p8/hqdefault.jpg?sqp=-oaymwEjCOADEI4CSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLD33ZfTKyCvv6OWsoN_imf2kx3vnQ", @"S1gp0m4B5p8"),
         MODEL(@"Teenage Fever", @"https://i.ytimg.com/vi/e8HtwsnuTIw/hq720.jpg?sqp=-oaymwEXCNAFEJQDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDMtNcOuNNwmb7rVQfQYpmpOeWDbA", @"e8HtwsnuTIw"),
     ];
-    return @[section, sectionTwo, sectionThree, sectionTwo];
+    
+    KBSection *sectionFour = [KBSection new];
+    sectionFour.type = @"standard";
+    sectionFour.sectionName = @"Third";
+    sectionFour.size = @"320x240";
+    sectionFour.infinite = false;
+    sectionFour.autoScroll = false;
+    sectionFour.order = 3;
+    sectionFour.className = @"KBModelItem";
+    sectionFour.items = @[
+        MODEL(@"God's Plan", @"https://i.ytimg.com/vi/xpVfcZ0ZcFM/hqdefault.jpg", @"xpVfcZ0ZcFM"),
+        MODEL(@"Rich Flex", @"https://i.ytimg.com/vi/I4DjHHVHWAE/hqdefault.jpg", @"I4DjHHVHWAE"),
+        MODEL(@"Spin Bout U", @"https://i.ytimg.com/vi/T8nbNQpRwNo/hqdefault.jpg", @"T8nbNQpRwNo"),
+        MODEL(@"MIA", @"https://i.ytimg.com/vi/NveQffpaOlU/hqdefault.jpg", @"NveQffpaOlU"),
+        MODEL(@"Search & Rescue", @"https://i.ytimg.com/vi/tVthyPOWc-E/hqdefault.jpg", @"tVthyPOWc-E"),
+    ];
+    
+    return @[section, sectionTwo, sectionThree, sectionFour];
 }
 
 - (NSArray *)loadData {
