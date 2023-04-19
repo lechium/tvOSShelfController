@@ -1,0 +1,16 @@
+//
+//  Prefix.pch
+//  tvOSGridTest
+//
+//  Created by Kevin Bradley on 3/11/16.
+//  Copyright © 2016 nito. All rights reserved.
+//
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <tvOSShelfController/Defines.h>
+#define NB [NSBundle mainBundle]
+#define UD [NSUserDefaults standardUserDefaults]
+#define FM [NSFileManager defaultManager]
+#endif

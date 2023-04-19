@@ -1,0 +1,8 @@
+use_frameworks!
+
+platform :tvos, '13.0'
+
+target 'Example' do
+  pod 'tvOSShelfController', :path => '../'
+
+end
