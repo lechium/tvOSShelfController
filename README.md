@@ -13,6 +13,8 @@ Easily set up a standard sectioned 'shelf' style view on tvOS (like in App Store
 
 ```Objective-C
     
+    @import tvOSShelfController;
+    
     #define MODEL(n,p,i) [[KBModelItem alloc] initWithTitle:n imagePath:p uniqueID:i]
 
     - (NSArray *)items {
