@@ -6,7 +6,7 @@
 //  Copyright © 2017 nito, LLC. All rights reserved.
 //
 
-#import "Defines.h"
+#import "tvOSShelfController.h"
 #import "KBShelfViewController.h"
 #import "KBTableViewCell.h"
 #import "KBDataItemCollectionViewCell.h"

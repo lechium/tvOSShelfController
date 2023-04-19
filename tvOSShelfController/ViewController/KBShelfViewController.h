@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "KBProtocols.h"
 
+@class KBModelItem, KBSection;
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, ScrollDirection) {
