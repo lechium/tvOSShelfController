@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSNumber *resultType;
 @property (nonatomic, strong) NSString *uniqueID;
 
+-(instancetype)initWithTitle:(NSString *)title imagePath:(NSString *)path uniqueID:(NSString *)unique;
+
 @end
 
 NS_ASSUME_NONNULL_END
