@@ -256,7 +256,8 @@
     KBTableViewCell *cell = self.cellArray[@(indexPath.section)];
     if (!cell) {
         cell = [self createCellAtIndexPath:indexPath];
-        _cells[indexPath.row] = cell;
+        [_cells insertObject:cell atIndex:indexPath.row];
+        self.cellArray = _cells;
         //[_cellCache setObject:cell forKey:@(indexPath.section)];
     }
     return cell;
