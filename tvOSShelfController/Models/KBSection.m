@@ -30,6 +30,10 @@
     return self;
 }
 
+- (CGSize)imageSize {
+    return CGSizeMake(self.imageWidth, self.imageHeight);
+}
+
 - (CGFloat)imageWidth {
     return [[[[self size] componentsSeparatedByString:@"x"] firstObject] floatValue];
 }

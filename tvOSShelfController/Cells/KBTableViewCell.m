@@ -23,7 +23,6 @@
     return NO;
 }
 
-//var systemFocusScaleFactor: CGFloat = 1.07
 - (CGFloat)systemFocusScaleFactor {
     return 1.07;
 }
@@ -45,7 +44,7 @@
 
 - (void)setupLabelIfNecessary {
     if (!self.trayTitleLabel) {
-        self.trayTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 0, 100, 100)];
+        self.trayTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 10, 100, 100)];
         self.trayTitleLabel.font = [UIFont systemFontOfSize:38 weight:UIFontWeightSemibold];
         self.trayTitleLabel.textColor = [UIColor colorFromHex:@"887C74"];
         [self addSubview:self.trayTitleLabel];
@@ -116,9 +115,8 @@
         [self.trayTitleLabel sizeToFit];
         layout.itemSize = defaultSize;//CGSizeMake(308, 250);
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        layout.sectionInset = UIEdgeInsetsMake(50, 0, 0, 20);
-        layout.minimumLineSpacing = 60;
-        layout.minimumInteritemSpacing = 60;
+        layout.sectionInset = UIEdgeInsetsMake(0, 40, 0, 20);
+        layout.minimumLineSpacing = 50;
         layout.sectionHeadersPinToVisibleBounds = YES;
         
     }

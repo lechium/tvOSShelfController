@@ -31,17 +31,35 @@
 				<key>views</key>
 				<string>178,831,027 views</string>
 			</dict>
+			<dict>
+				<key>___className</key>
+				<string>KBModelItem</string>
+				<key>details</key>
+				<string>Drake</string>
+				<key>duration</key>
+				<string>5:57</string>
+				<key>imagePath</key>
+				<string>https://i.ytimg.com/vi/xpVfcZ0ZcFM/hqdefault.jpg</string>
+				<key>banner</key>
+				<string>https://i.ytimg.com/vi/xpVfcZ0ZcFM/hqdefault.jpg</string>
+				<key>resultType</key>
+				<integer>1</integer>
+				<key>title</key>
+				<string>God’s Plan</string>
+				<key>uniqueID</key>
+				<string>xpVfcZ0ZcFM</string>
+			</dict>
 		</array>
 		<key>title</key>
 		<string></string>
 		<key>infinite</key>
-		<true/>
+		<false/>
 		<key>autoScroll</key>
-		<true/>
+		<false/>
 		<key>type</key>
 		<string>banner</string>
 		<key>size</key>
-		<string>1700x525</string>
+		<string>1700x425</string>
 		<key>className</key>
 		<string>KBModelItem</string>
 	</dict>
@@ -65,6 +83,8 @@
 				<string>https://i.ytimg.com/vi/uxpDa-c-4Mc/hqdefault.jpg</string>
 				<key>resultType</key>
 				<integer>1</integer>
+				<key>title</key>
+				<string>Hotline Bling</string>
 				<key>uniqueID</key>
 				<string>uxpDa-c-4Mc</string>
 			</dict>

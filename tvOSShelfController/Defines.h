@@ -15,6 +15,8 @@
 #import "NSDictionary+serialize.h"
 #import "KBSection.h"
 
+static NSString * const kShelfControllerRoundedEdges = @"kShelfControllerRoundedEdges";
+
 #define INFINITE_CELL_COUNT 100000
 
 #if (TARGET_IPHONE_SIMULATOR)

@@ -26,12 +26,14 @@ typedef NS_ENUM(NSInteger, ScrollDirection) {
 @interface KBShelfViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDataSourcePrefetching>
 
 //@property (nonatomic, copy, nullability) returnType (^blockName)(parameterTypes);
-@property (nonatomic, copy, nullable) void (^itemSelectedBlock)(KBModelItem *item);
+@property (nonatomic, copy, nullable) void (^itemSelectedBlock)(KBModelItem *item, BOOL longPress);
 @property (nonatomic, strong) UIImage *placeholderImage;
 @property (nonatomic, strong) NSArray <KBSection *> *sections;
 @property (nonatomic, strong) UITableView *tableView;
+@property (readwrite, assign) BOOL useRoundedEdges;
 
 - (void)updateAutoScroll;
++ (BOOL)useRoundedEdges;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -14,11 +14,13 @@
 #import "UIColor+Additions.h"
 #import <objc/runtime.h>
 #import "KBModelItem.h"
+#import <SDWebImage/UIImage+Transform.h>
 
 @interface KBShelfViewController () {
     UILongPressGestureRecognizer *longPress;
     BOOL _firstAppearance;
     NSArray <KBSection *> *sections_;
+    NSMutableArray *_cells;
 }
 @property (nonatomic, assign) CGFloat lastScrollViewOffsetX;
 @property (nonatomic, assign) CGFloat lastScrollViewOffsetY;
@@ -26,17 +28,37 @@
 @property (nonatomic, strong) NSTimer *bannerTimer;
 @property (readwrite, assign) NSInteger selectedSection;
 @property (nonatomic, strong) NSCache *cellCache;
+@property (nonatomic, strong) NSArray *cellArray;
 @property ScrollDirection scrollDirection;
 @property NSDate *randomDate;
 @end
 
 @implementation KBShelfViewController
 
++ (void)initialize {
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kShelfControllerRoundedEdges: @(true)}];
+}
+
+- (void)setUseRoundedEdges:(BOOL)useRoundedEdges {
+    [[NSUserDefaults standardUserDefaults] setBool:useRoundedEdges forKey:kShelfControllerRoundedEdges];
+    [self.tableView reloadData];
+}
+
++ (BOOL)useRoundedEdges {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kShelfControllerRoundedEdges];
+}
+
+- (BOOL)useRoundedEdges {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kShelfControllerRoundedEdges];
+}
+
+
 -(void)loadView {
     [super loadView];
     self.randomDate = [NSDate date];
     self.contentOffsetDictionary = [NSMutableDictionary dictionary];
     self.cellCache = [NSCache new];
+    _cells = [NSMutableArray new];
 }
 
 - (void)viewDidLoad {
@@ -138,7 +160,23 @@
 
 -(void)handleLongPress:(UILongPressGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateEnded) {
-        DLog(@"LONG PRESS MOFO");
+        KBDataItemCollectionViewCell *cell = (KBDataItemCollectionViewCell*)[[UIFocusSystem focusSystemForEnvironment:self.tableView] focusedItem];
+        if ([cell isKindOfClass:KBDataItemCollectionViewCell.class]) {
+            NSInteger sectionIndex = self.selectedSection;
+            KBSection *section = self.sections[@(sectionIndex)];
+            if (section) {
+                //DLog(@"section: %@", section);
+                KBTableViewCell *selectedTableCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionIndex]];
+                NSIndexPath *ip = [selectedTableCell.collectionView indexPathForCell:cell];
+                DLog(@"found index: %lu", ip.row);
+                KBModelItem *item = section.items[@(ip.row)];
+                DLog(@"found item: %@",item);
+                if (self.itemSelectedBlock) {
+                    self.itemSelectedBlock(item, true);
+                }
+            }
+            
+        }
     }
 }
 
@@ -177,21 +215,25 @@
 - (void)createTableViewCells {
     [self showHUD];
     [_cellCache removeAllObjects];
+    [_cells removeAllObjects];
     [self.sections enumerateObjectsUsingBlock:^(KBSection * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:idx];
         KBTableViewCell *cell = [self createCellAtIndexPath:ip];
-        [_cellCache setObject:cell forKey:@(idx)];
+        [_cells addObject:cell];
+        //[_cellCache setObject:cell forKey:@(idx)];
     }];
+    _cellArray = _cells;
     [self dismissHUD];
     [self.tableView reloadData];
-    [self handleInfiniteSections];
+    //[self handleInfiniteSections];
 }
 
 - (void)handleInfiniteSections {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [[self infiniteSections] enumerateObjectsUsingBlock:^(KBSection * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSInteger index = [self.sections indexOfObject:obj];
-            KBTableViewCell *cell = [self.cellCache objectForKey:@(index)];
+            //KBTableViewCell *cell = [self.cellCache objectForKey:@(index)];
+            KBTableViewCell *cell = self.cellArray[index];
             [cell goToOne];
         }];
     });
@@ -210,10 +252,12 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    KBTableViewCell *cell = [self.cellCache objectForKey:@(indexPath.section)];
+    //KBTableViewCell *cell = [self.cellCache objectForKey:@(indexPath.section)];
+    KBTableViewCell *cell = self.cellArray[@(indexPath.section)];
     if (!cell) {
         cell = [self createCellAtIndexPath:indexPath];
-        [_cellCache setObject:cell forKey:@(indexPath.section)];
+        _cells[indexPath.row] = cell;
+        //[_cellCache setObject:cell forKey:@(indexPath.section)];
     }
     return cell;
 }
@@ -228,9 +272,9 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     KBSection *section = self.sections[indexPath.section];
     if (section.sectionType == KBSectionTypeBanner){
-        return section.imageHeight;
+        return section.imageHeight + 100;
     } else {
-        return section.imageHeight + 100; //need extra space for the labels and whatnot
+        return section.imageHeight + 170; //need extra space for the labels and whatnot
     }
 }
 
@@ -262,7 +306,9 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (self.itemSelectedBlock) {
         KBModelItem *item = [self collectionView:collectionView itemAtRow:indexPath.row];
-        self.itemSelectedBlock(item);
+        if (self.itemSelectedBlock) {
+            self.itemSelectedBlock(item, FALSE);
+        }
     }
 }
 
@@ -272,9 +318,9 @@
     KBSection *section = self.sections[realSection];
     if (section.sectionType == KBSectionTypeBanner) {
         ourCell.label.text = @"";
-        ourCell.imageHeightConstraint.constant = section.imageHeight - 50;
+        ourCell.imageHeightConstraint.constant = section.imageHeight;
     } else {
-        ourCell.imageHeightConstraint.constant = section.imageHeight - 50;
+        ourCell.imageHeightConstraint.constant = section.imageHeight;
     }
 }
 
@@ -296,6 +342,8 @@
 }
 
 - (NSIndexPath *)indexPathForPreferredFocusedViewInCollectionView:(UICollectionView *)collectionView {
+    KBSection *currentSection = self.sections[collectionView.section];
+    if (currentSection.sectionType != SectionTypeBanner) { return nil; }
     NSIndexPath *visibleIndexPath = [self centeredIndexPathForCollectionView:collectionView];
     return visibleIndexPath;
 }
@@ -329,16 +377,46 @@
     KBSection *featuredSection = self.sections[realSection];
     KBModelItem *currentItem = [self collectionView:collectionView itemAtRow:indexPath.row];
     cell.label.text = currentItem.title;
+    CGSize currentSize = featuredSection.imageSize;
     if (featuredSection.sectionType == SectionTypeBanner) {
         cell.bannerLabel.text = currentItem.title;
         cell.bannerDescription.text = currentItem.details;
         NSString *banner = [currentItem.banner stringByReplacingOccurrencesOfString:@"http://" withString:@"https://"];
-        [cell.imageView sd_setImageWithURL:[NSURL URLWithString:banner] placeholderImage:nil options:SDWebImageAllowInvalidSSLCertificates];
+        if ([KBShelfViewController useRoundedEdges]) {
+            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:banner] placeholderImage:nil options:SDWebImageAllowInvalidSSLCertificates | SDWebImageAvoidAutoSetImage completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                if (!CGSizeEqualToSize(currentSize, image.size)) {
+                    image = [image scaledImagedToSize:currentSize];
+                }
+                DLog(@"banner %@ section size: %@ vs: %@ ratio: %.5f", currentItem.title,NSStringFromCGSize(currentSize), NSStringFromCGSize(image.size), image.aspectRatio);
+                UIImage *rounded = [image sd_roundedCornerImageWithRadius:20.0 corners:UIRectCornerAllCorners borderWidth:0 borderColor:nil];
+                NSString *roundedPath = [[NSObject documentsFolder] stringByAppendingPathComponent:[banner lastPathComponent]];
+                if (![[NSFileManager defaultManager] fileExistsAtPath:[NSObject documentsFolder]]) {
+                    [[NSFileManager defaultManager] createDirectoryAtPath:[NSObject documentsFolder] withIntermediateDirectories:true attributes:nil error:nil];
+                }
+                DLog(@"rounded: %@", roundedPath);
+                [UIImagePNGRepresentation(rounded) writeToFile:roundedPath atomically:true];
+                cell.imageView.image = rounded;
+            }];
+        } else {
+            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:banner] placeholderImage:nil options:SDWebImageAllowInvalidSSLCertificates];
+        }
+        
     } else {
         cell.bannerLabel.text = @"";
         cell.bannerDescription.text = @"";
         NSString *icon = [currentItem.imagePath stringByReplacingOccurrencesOfString:@"http://" withString:@"https://"];
-        [cell.imageView sd_setImageWithURL:[NSURL URLWithString:icon] placeholderImage:self.placeholderImage options:SDWebImageAllowInvalidSSLCertificates];
+        if ([KBShelfViewController useRoundedEdges]) {
+            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:icon] placeholderImage:self.placeholderImage options:SDWebImageAllowInvalidSSLCertificates | SDWebImageAvoidAutoSetImage completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                
+                if (!CGSizeEqualToSize(currentSize, image.size)) {
+                    image = [image scaledImagedToSize:currentSize];
+                }
+                DLog(@"standard %@ section size: %@ vs: %@ ratio: %.5f", currentItem.title, NSStringFromCGSize(currentSize), NSStringFromCGSize(image.size), image.aspectRatio);
+                cell.imageView.image = [image sd_roundedCornerImageWithRadius:20.0 corners:UIRectCornerAllCorners borderWidth:0 borderColor:nil];
+            }];
+        } else {
+            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:icon] placeholderImage:nil options:SDWebImageAllowInvalidSSLCertificates];
+        }
     }
     
     return cell;
@@ -346,12 +424,29 @@
 
 #pragma mark - UIScrollViewDelegate Methods
 
+/*
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    DLOG_SELF;
+    if ([scrollView isKindOfClass:UICollectionView.class]) {
+        DLog(@"velocity: %@ targetContentOffset: %@", NSStringFromCGPoint(velocity), NSStringFromCGPoint(*targetContentOffset));
+        CGPoint tco = *targetContentOffset;
+        if (tco.x == -80) {
+            //DLog(@"do things");
+            //targetContentOffset->x = 0;
+        }
+    } else {
+        DLog(@"diff scroll view: %@", scrollView);
+        DLog(@"velocity: %@ targetContentOffset: %@", NSStringFromCGPoint(velocity), NSStringFromCGPoint(*targetContentOffset));
+    }
+}
+*/
 - (void)scrollViewWillSnapNavigationBar:(UIScrollView *)scrollView {
 }
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (![scrollView isKindOfClass:[UICollectionView class]]) return;
     UICollectionView *collectionView = (UICollectionView *)scrollView;
-    if (collectionView.section == 0){
+    KBSection *section = self.sections[collectionView.section];
+    if (section.sectionType == SectionTypeBanner){
         return;
     }
     CGFloat horizontalOffset = scrollView.contentOffset.x;

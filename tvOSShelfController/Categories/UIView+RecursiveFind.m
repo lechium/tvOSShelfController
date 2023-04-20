@@ -18,6 +18,57 @@
 
 @end
 
+@implementation UIImage (Render)
+
+- (UIImage *)scaledImagedToSize:(CGSize)newSize {
+    CGSize scaledSize = newSize;
+    CGFloat scaleFactor = 1.0;
+    if (self.size.width > self.size.height ) {
+        scaleFactor = self.size.width / self.size.height;
+        scaledSize.width = newSize.width;
+        scaledSize.height = newSize.width / scaleFactor;
+    } else {
+        scaleFactor = self.size.height / self.size.width;
+        scaledSize.height = newSize.height;
+        scaledSize.width = newSize.width / scaleFactor;
+    }
+    UIGraphicsBeginImageContextWithOptions(scaledSize, false, 0.0);
+    CGRect scaledImagedRect = CGRectMake(0.0, 0.0, scaledSize.width, scaledSize.height);
+    [self drawInRect:scaledImagedRect];
+    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return scaledImage;
+}
+
+- (CGFloat)aspectRatio {
+    return self.size.width/self.size.height;
+}
+
+- (UIImage *)roundedBorderImage:(CGFloat)cornerRadius borderColor:(UIColor *)color borderWidth:(CGFloat)width {
+    __block UIImage *image = [UIImage renderedImage:self.size render:^(CGRect rect, CGContextRef context) {
+        UIBezierPath *roundedRect = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:cornerRadius];
+        [roundedRect addClip];
+        CGContextDrawImage(context, rect, self.CGImage);
+        if (color) {
+            [color setStroke];
+            roundedRect.lineWidth = 2 * width;
+            [roundedRect stroke];
+        }
+    }];
+    return image;
+}
+
++ (UIImage *)renderedImage:(CGSize)size render:(void(^)(CGRect rect, CGContextRef context))renderBlock {
+    CGRect bounds = CGRectMake(0, 0, size.width, size.height);
+    UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:size];
+    __block UIImage *image = [renderer imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull rendererContext) {
+        CGContextTranslateCTM(rendererContext.CGContext, 0, bounds.size.height);
+        CGContextScaleCTM(rendererContext.CGContext, 1, -1);
+        renderBlock(bounds, rendererContext.CGContext);
+    }];
+    return image;
+}
+@end
 
 //-Wincomplete-implementation
 #pragma clang diagnostic push
@@ -257,5 +308,12 @@
     return self;
 }
 
+- (void)setCornerRadius:(CGFloat)radius updatingShadowPath:(BOOL)updatingShadowPath {
+    self.layer.cornerRadius = radius;
+    self.layer.masksToBounds = radius > 0;
+    if (updatingShadowPath) {
+        self.layer.shadowPath = radius > 0 ? [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:radius].CGPath : nil;
+    }
+}
 
 @end

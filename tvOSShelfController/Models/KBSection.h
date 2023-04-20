@@ -27,7 +27,7 @@ typedef enum {
 
 - (CGFloat)imageWidth;
 - (CGFloat)imageHeight;
-
+- (CGSize)imageSize;
 - (SectionType)sectionType;
 
 - (instancetype)initWithSectionDictionary:(NSDictionary *)dict;

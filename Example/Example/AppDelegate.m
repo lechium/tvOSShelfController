@@ -107,11 +107,12 @@
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.shelfViewController = [[KBShelfViewController alloc] init];
-    self.shelfViewController.placeholderImage = [UIImage imageNamed:@"YTPlaceholder.png"];
-    self.shelfViewController.itemSelectedBlock = ^(KBModelItem * _Nonnull item) {
-        DLog(@"item selected block: %@", item);
+    self.shelfViewController.useRoundedEdges = false;
+    self.shelfViewController.placeholderImage = [[UIImage imageNamed:@"YTPlaceholder.png"] roundedBorderImage:20.0 borderColor:nil borderWidth:0];
+    self.shelfViewController.itemSelectedBlock = ^(KBModelItem * _Nonnull item, BOOL isLongPress) {
+        DLog(@"item selected block: %@ long: %d", item, isLongPress);
     };
-    self.shelfViewController.sections = [self items];
+    self.shelfViewController.sections = [self loadData];
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.shelfViewController];
     self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];

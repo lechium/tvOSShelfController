@@ -8,6 +8,7 @@
 
 #import "KBDataItemCollectionViewCell.h"
 #import "Defines.h"
+#import "KBShelfViewController.h"
 
 @implementation KBDataItemCollectionViewCell
 
@@ -82,7 +83,7 @@
     [self.imageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:UIRectEdgeBottom];
     self.imageView.image = [UIImage imageNamed:@"YTPlaceholder"];
     [self.label autoAlignAxisToSuperviewAxis:NSLayoutAttributeCenterX];
-    self.bottomlabelInset = [self.label.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor constant:5];
+    self.bottomlabelInset = [self.label.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:40];
     self.bottomlabelInset.active = true;
     self.label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     //DLog(@"labelfont: %@", self.label.font.fontName);
@@ -98,7 +99,7 @@
     self.secondaryLabel.textColor = [UIColor grayColor];
     
     [self.label.widthAnchor constraintEqualToAnchor:self.contentView.widthAnchor multiplier:0.8].active = true;
-    self.imageHeightConstraint = [self.imageView autoSetDimension:NSLayoutAttributeHeight toSize:208];
+    self.imageHeightConstraint = [self.imageView autoSetDimension:NSLayoutAttributeHeight toSize:320];
     self.imageView.adjustsImageWhenAncestorFocused =true;
     [self.bannerLabel shadowify];
     self.label.textColor = [self labelColor];
@@ -109,19 +110,39 @@
 //dark mode unselected label color: "UIExtendedSRGBColorSpace 1 1 1 0.5"
 //
 
+- (void)updateOverlay {
+    if (![KBShelfViewController useRoundedEdges]){
+        return;
+    }
+    UIView *overlay = self.imageView.overlayContentView;
+    if ([self isFocused]) {
+        [overlay setCornerRadius:12.5 updatingShadowPath:true];
+        overlay.layer.borderColor = [UIColor whiteColor].CGColor;
+        overlay.layer.borderWidth = 5.0;
+    } else {
+        [overlay setCornerRadius:10.0 updatingShadowPath:true];
+        overlay.layer.borderColor = [UIColor clearColor].CGColor;
+        overlay.layer.borderWidth = 0.0;
+    }
+}
+
 - (void)didUpdateFocusInContext:(UIFocusUpdateContext *)context withAnimationCoordinator:(UIFocusAnimationCoordinator *)coordinator {
     [coordinator addCoordinatedAnimations:^{
         
         if ([self isFocused]) {
             self.label.textColor = [UIColor whiteColor];
             self.secondaryLabel.textColor = [UIColor whiteColor];
-            self.bottomlabelInset.constant = 20;
-            //self.imageView.transform = CGAffineTransformMakeScale(1.15, 1.15);
+            self.bottomlabelInset.constant = 70;
+            if (self.label.text.length > 0){
+                [self updateOverlay];
+            }
         } else {
-            //self.imageView.transform = CGAffineTransformIdentity;
+            if (self.label.text.length > 0) {
+                [self updateOverlay];
+            }
             self.label.textColor = [self labelColor];
             self.secondaryLabel.textColor = [self secondaryLabelColor];
-            self.bottomlabelInset.constant = 5;
+            self.bottomlabelInset.constant = 50;
         }
     } completion:^{
         
