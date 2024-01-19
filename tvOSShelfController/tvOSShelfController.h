@@ -14,6 +14,7 @@
 #import "UIColor+Additions.h"
 #import "UIView+RecursiveFind.h"
 #import "UIWindow+Additions.h"
+#import "KBDataSource.h"
 #import "KBDataItemCollectionViewCell.h"
 #import "KBTableViewCell.h"
 #import "KBModelItem.h"
