@@ -389,15 +389,6 @@
                 }
                 //DLog(@"banner %@ section size: %@ vs: %@ ratio: %.5f", currentItem.title,NSStringFromCGSize(currentSize), NSStringFromCGSize(image.size), image.aspectRatio);
                 UIImage *rounded = [image sd_roundedCornerImageWithRadius:20.0 corners:UIRectCornerAllCorners borderWidth:0 borderColor:nil];
-                /*
-                NSString *roundedPath = [[NSObject documentsFolder] stringByAppendingPathComponent:[banner lastPathComponent]];
-                if (![[NSFileManager defaultManager] fileExistsAtPath:[NSObject documentsFolder]]) {
-                    [[NSFileManager defaultManager] createDirectoryAtPath:[NSObject documentsFolder] withIntermediateDirectories:true attributes:nil error:nil];
-                }
-                DLog(@"rounded: %@", roundedPath);
-                
-                [UIImagePNGRepresentation(rounded) writeToFile:roundedPath atomically:true];
-                 */
                 cell.imageView.image = rounded;
             }];
         } else {

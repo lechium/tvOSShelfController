@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "tvOSShelfController"
-  spec.version      = "0.2.1"
+  spec.version      = "0.2.2"
   spec.summary      = "tvOS section shelf view made easy."
 
   # This description is used to generate tags and improve search results.
