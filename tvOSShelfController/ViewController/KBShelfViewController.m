@@ -395,8 +395,9 @@
                     [[NSFileManager defaultManager] createDirectoryAtPath:[NSObject documentsFolder] withIntermediateDirectories:true attributes:nil error:nil];
                 }
                 DLog(@"rounded: %@", roundedPath);
-                 */
+                
                 [UIImagePNGRepresentation(rounded) writeToFile:roundedPath atomically:true];
+                 */
                 cell.imageView.image = rounded;
             }];
         } else {
