@@ -240,7 +240,6 @@
 }
 
 - (KBTableViewCell *)createCellAtIndexPath:(NSIndexPath *)indexPath {
-    LOG_SELF;
     KBSection *section = self.sections[indexPath.section];
     static NSString *CellIdentifier = @"CellIdentifier";
     KBTableViewCell *cell = (KBTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -253,7 +252,6 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    LOG_SELF;
     //KBTableViewCell *cell = [self.cellCache objectForKey:@(indexPath.section)];
     KBTableViewCell *cell = self.cellArray[@(indexPath.section)];
     if (!cell) {
@@ -372,9 +370,7 @@
      */
 }
 
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    LOG_SELF;
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     KBDataItemCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CollectionViewCellIdentifier forIndexPath:indexPath];
     
     NSInteger realSection = [collectionView section];
@@ -391,13 +387,15 @@
                 if (!CGSizeEqualToSize(currentSize, image.size)) {
                     image = [image scaledImagedToSize:currentSize];
                 }
-                DLog(@"banner %@ section size: %@ vs: %@ ratio: %.5f", currentItem.title,NSStringFromCGSize(currentSize), NSStringFromCGSize(image.size), image.aspectRatio);
+                //DLog(@"banner %@ section size: %@ vs: %@ ratio: %.5f", currentItem.title,NSStringFromCGSize(currentSize), NSStringFromCGSize(image.size), image.aspectRatio);
                 UIImage *rounded = [image sd_roundedCornerImageWithRadius:20.0 corners:UIRectCornerAllCorners borderWidth:0 borderColor:nil];
+                /*
                 NSString *roundedPath = [[NSObject documentsFolder] stringByAppendingPathComponent:[banner lastPathComponent]];
                 if (![[NSFileManager defaultManager] fileExistsAtPath:[NSObject documentsFolder]]) {
                     [[NSFileManager defaultManager] createDirectoryAtPath:[NSObject documentsFolder] withIntermediateDirectories:true attributes:nil error:nil];
                 }
                 DLog(@"rounded: %@", roundedPath);
+                 */
                 [UIImagePNGRepresentation(rounded) writeToFile:roundedPath atomically:true];
                 cell.imageView.image = rounded;
             }];
@@ -415,7 +413,7 @@
                 if (!CGSizeEqualToSize(currentSize, image.size)) {
                     image = [image scaledImagedToSize:currentSize];
                 }
-                DLog(@"standard %@ section size: %@ vs: %@ ratio: %.5f", currentItem.title, NSStringFromCGSize(currentSize), NSStringFromCGSize(image.size), image.aspectRatio);
+                //DLog(@"standard %@ section size: %@ vs: %@ ratio: %.5f", currentItem.title, NSStringFromCGSize(currentSize), NSStringFromCGSize(image.size), image.aspectRatio);
                 cell.imageView.image = [image sd_roundedCornerImageWithRadius:20.0 corners:UIRectCornerAllCorners borderWidth:0 borderColor:nil];
             }];
         } else {
