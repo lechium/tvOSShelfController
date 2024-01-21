@@ -240,6 +240,7 @@
 }
 
 - (KBTableViewCell *)createCellAtIndexPath:(NSIndexPath *)indexPath {
+    LOG_SELF;
     KBSection *section = self.sections[indexPath.section];
     static NSString *CellIdentifier = @"CellIdentifier";
     KBTableViewCell *cell = (KBTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -252,12 +253,13 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    LOG_SELF;
     //KBTableViewCell *cell = [self.cellCache objectForKey:@(indexPath.section)];
     KBTableViewCell *cell = self.cellArray[@(indexPath.section)];
     if (!cell) {
         cell = [self createCellAtIndexPath:indexPath];
-        [_cells insertObject:cell atIndex:indexPath.row];
-        self.cellArray = _cells;
+        //[_cells insertObject:cell atIndex:indexPath.row];
+        //self.cellArray = _cells;
         //[_cellCache setObject:cell forKey:@(indexPath.section)];
     }
     return cell;
@@ -372,6 +374,7 @@
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    LOG_SELF;
     KBDataItemCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CollectionViewCellIdentifier forIndexPath:indexPath];
     
     NSInteger realSection = [collectionView section];

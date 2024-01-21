@@ -79,8 +79,8 @@ Pod::Spec.new do |spec|
   #spec.exclude_files = "Classes/Exclude"
 
   # spec.public_header_files = "Classes/**/*.h"
-  # spec.public_header_files = "tvOSShelfController/Cells/*.h", "tvOSShelfController/Defines.h", "tvOSShelfController/KBProtocols.h", "tvOSShelfController/Models/*.h", "tvOSShelfController/ViewController/*.h"
-
+   spec.public_header_files = "tvOSShelfController/tvOSShelfController.h", "tvOSShelfController/Cells/*.h", "tvOSShelfController/Defines.h", "tvOSShelfController/KBProtocols.h", "tvOSShelfController/Models/*.h", "tvOSShelfController/ViewController/*.h" "tvOSShelfController/Categories/*.h"
+   spec.project_header_files = "tvOSShelfController/3rdParty/SVProgressHUD/**/*.h"
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
